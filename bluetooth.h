@@ -17,6 +17,7 @@ enum BT_CMD {
   TURN_RIGHT,
   TURN_LEFT,
   HALT,
+  BACK,
   // TODO: add your own command type here
 };
 
@@ -30,12 +31,12 @@ BT_CMD ask_BT(){
       // 2. link bluetooth message to your own command type
       message = cmd - 48;
       #ifdef DEBUG
-      Serial.print("cmd : ");
-      Serial.println(cmd);
+//      Serial.print("cmd : ");
+//      Serial.println(cmd);
       #endif
     }
-    Serial.print("msg : ");
-    Serial.println(message);
+//    Serial.print("msg : ");
+//    Serial.println(message);
     return message;
 }// ask_BT
 

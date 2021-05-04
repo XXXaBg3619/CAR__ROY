@@ -249,7 +249,7 @@ void setup()
 
 /*===========================initialize variables===========================*/
 //int r2=0, r3=0, m=0, l3=0, l2=0; //紅外線模組的讀值(0->white,1->black)
-int _Tp = 90; //set your own value for motor power
+int _Tp = 85; //set your own value for motor power
 bool start = false, state=false; //set state to false to halt the car, set state to true to activate the car
 bool reverse = false;
 BT_CMD _cmd = NOTHING; //enum for bluetooth message, reference in bluetooth.h line 2

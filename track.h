@@ -55,8 +55,8 @@ void MotorInverter(int motor, bool& dir) {
 // P/PID control Tracking
 void tracking(int L3_value,int L2_value,int M,int R2_value, int R3_value){
   // find your own parameters!
-  double _Kp = 70; // p term parameter 
-  double _Kd = 120; // d term parameter (optional) 
+  double _Kp = 73; // p term parameter 
+  double _Kd = 115; // d term parameter (optional) 
   static double _Ki = 0.1; // i term parameter (optional) (Hint: 不要調太大)
   static double error = 0;
   double vR, vL; // 馬達左右轉速原始值(從PID control 計算出來)。Between -255 to 255.
@@ -69,7 +69,7 @@ void tracking(int L3_value,int L2_value,int M,int R2_value, int R3_value){
   static int t = 0;
     
   // TODO: complete your P/PID tracking code
-  if (L3_value + L2_value + R2_value + R3_value != 0){
+  if (L3_value + L2_value +M + R2_value + R3_value != 0){
   error = ((-2)*L3_value + (-1)*L2_value + R2_value + 2*R3_value)/(L3_value + L2_value + R2_value + R3_value);
   }
   else{
@@ -103,7 +103,7 @@ void tracking(int L3_value,int L2_value,int M,int R2_value, int R3_value){
   
   ++t;
   
-  if (t>1000){
+  if (t>800){
     t = 0;
     sum_error = 0;
   }
