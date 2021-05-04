@@ -268,11 +268,14 @@ void loop()
     delay(5000);
    }
 
-   else Search();
+   else{
+   Search();
+   }
+
    SetState();
  
-    
 }
+
 
 void SetState()
 {
@@ -285,21 +288,24 @@ void SetState()
     state = false;
   }
 
-    state = false;
+    //state = false; // 怪怪der
   if(_cmd == 67){
     Serial.println("start = true");
     start = true;
     state = true;
   }
-  else if(_cmd == 53){
 
+  else if(_cmd == 53){
     start = false;
     state = false;
   }
-  else
+
+  else{
     state = true;
+  }
   
 }
+
 
 bool at_node = false;
 bool all_black = false;
@@ -308,6 +314,7 @@ int L2_value;
 int M_value;
 int R2_value;
 int R3_value;
+
 
 void Search(){
 
@@ -318,19 +325,21 @@ void Search(){
   R3_value = digitalRead(R3);
 
   if(_cmd == ADVANCE){
-    MotorWriting(180,180);
+    MotorWriting(160,160);
     delay(300);
   }
 
-     
-  else if(_cmd == U_TURN)
+  else if(_cmd == U_TURN){
     U_Turn();
+  }
      
-  else if(_cmd == TURN_LEFT)
+  else if(_cmd == TURN_LEFT){
     Left_Turn(L3_value, L2_value, M_value, R2_value, R3_value);
+  }
       
-  else if(_cmd == TURN_RIGHT)
+  else if(_cmd == TURN_RIGHT){
     Right_Turn(L3_value, L2_value, M_value, R2_value, R3_value);
+  }
 
 
   L3_value = digitalRead(L3);
@@ -342,20 +351,15 @@ void Search(){
 
   all_black = L2_value*M_value*R2_value*R3_value != 0 or L3_value*L2_value*M_value*R2_value != 0;
 
-  if(!all_black)
+  if(!all_black){
     at_node = false;
+  }
     
   else if(all_black and !at_node){
-    
     send_msg('1');
     at_node = true;
     MotorWriting(0, 0);
-    
   }
-
-  
-  
- 
 
   
 }
