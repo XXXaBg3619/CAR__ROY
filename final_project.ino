@@ -166,7 +166,7 @@
 //    at_node = false;
 //  
 //}
-///*===========================define function===========================*/
+
 
 
 
@@ -184,8 +184,8 @@
 // for BlueTooth
 #include<SoftwareSerial.h>
 //// for RFID
-//#include <SPI.h>
-//#include <MFRC522.h>
+#include <SPI.h>
+#include <MFRC522.h>
 
 /*===========================define pin & create module object================================*/
 // BlueTooth
@@ -205,9 +205,9 @@ SoftwareSerial BT(9,8);   // TX,RX on bluetooth module, 請按照自己車上的
 #define R3   A1  // Define Right Most Sensor Pin
 
 // RFID, 請按照自己車上的接線寫入腳位
-//#define RST_PIN      10        // 讀卡機的重置腳位
-//#define SS_PIN       A0        // 晶片選擇腳位
-//MFRC522 mfrc522(SS_PIN, RST_PIN);  // 建立MFRC522物件
+#define RST_PIN      10        // 讀卡機的重置腳位
+#define SS_PIN       A0        // 晶片選擇腳位
+MFRC522 mfrc522(SS_PIN, RST_PIN);  // 建立MFRC522物件
 /*===========================define pin & create module object===========================*/
 
 /*============setup============*/
@@ -217,8 +217,8 @@ void setup()
    //Serial window
    Serial.begin(9600);
    //RFID initial
-//   SPI.begin();
-//   mfrc522.PCD_Init();
+   SPI.begin();
+   mfrc522.PCD_Init();
    //L298N pin
    pinMode(MotorR_I1,   OUTPUT);
    pinMode(MotorR_I2,   OUTPUT);
@@ -243,12 +243,13 @@ void setup()
 //#include "track.h"
 #include "bluetooth.h"
 #include "node.h"
+#include "RFID.h"
 
 /*=====Import header files=====*/
 
 /*===========================initialize variables===========================*/
 //int r2=0, r3=0, m=0, l3=0, l2=0; //紅外線模組的讀值(0->white,1->black)
-int _Tp = 100; //set your own value for motor power
+int _Tp = 90; //set your own value for motor power
 bool start = false, state=false; //set state to false to halt the car, set state to true to activate the car
 BT_CMD _cmd = NOTHING; //enum for bluetooth message, reference in bluetooth.h line 2
 /*===========================initialize variables===========================*/
@@ -262,10 +263,8 @@ void SetState();// switch the state
 void loop()
 {
    if(!state or !start) {
-    Serial.println("HALT");
-    delay(5000);
+    delay(500);
     MotorWriting(0,0);
-    delay(5000);
    }
 
    else{
@@ -288,7 +287,7 @@ void SetState()
     state = false;
   }
 
-    //state = false; // 怪怪der
+  state = false; // 怪怪der
   if(_cmd == 67){
     Serial.println("start = true");
     start = true;
@@ -325,12 +324,19 @@ void Search(){
   R3_value = digitalRead(R3);
 
   if(_cmd == ADVANCE){
-    MotorWriting(160,160);
-    delay(300);
+    Advance(L3_value, L2_value, M_value, R2_value, R3_value);
   }
 
   else if(_cmd == U_TURN){
     U_Turn();
+    byte idSize;
+    byte* id = rfid(idSize);
+    while(id == 0){
+      id = rfid(idSize);
+    }
+    send_byte(id, idSize);
+    //at_node = true;
+    
   }
      
   else if(_cmd == TURN_LEFT){
@@ -350,6 +356,14 @@ void Search(){
   tracking(L3_value,L2_value,M_value,R2_value, R3_value);
 
   all_black = L2_value*M_value*R2_value*R3_value != 0 or L3_value*L2_value*M_value*R2_value != 0;
+//
+//  byte idSize;
+//  byte* id = rfid(idSize);
+//  if(id != 0){
+//    send_byte(id, idSize);
+//    at_node = true;
+//  }
+
 
   if(!all_black){
     at_node = false;
@@ -360,6 +374,7 @@ void Search(){
     at_node = true;
     MotorWriting(0, 0);
   }
+ 
 
   
 }
