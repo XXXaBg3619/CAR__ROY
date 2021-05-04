@@ -12,7 +12,7 @@ import os
 
 def main():
     maze = mz.Maze("data/small_maze.csv")
-    point = score.Scoreboard("data/UID.csv", "team_NTUEE")
+    point = score.Scoreboard("data/UID.csv", "team_4")
     interf = interface.interface()  # it will send "s" to arduino
     # TODO : Initialize necessary variables
 
@@ -25,17 +25,19 @@ def main():
         i = 0
         while i < len(shortest_path) - 1:
             UID = interf.ser.SerialReadByte()
+            print("UID:", UID)
             if interf.ser.SerialReadString() == "1":
                 nd_from = maze.nd_dict[shortest_path[i]]
                 nd_to = maze.nd_dict[shortest_path[i + 1]]
-                interf.ser.SerialWrite(f"{maze.getAction(nd_from, nd_to)}")
                 print(f"arrive at Node{shortest_path[i]}")
+                interf.ser.SerialWrite(f"{maze.getAction(nd_from, nd_to)}")
                 i += 1
             elif UID != "0":
                 point.add_UID(UID)
                 i += 1
-                
-        interf.end_process()
+        while interf.ser.SerialReadByte() != "0":
+            point.add_UID(UID)
+            interf.end_process()
         
         
 
