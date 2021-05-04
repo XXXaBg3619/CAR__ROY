@@ -251,6 +251,7 @@ void setup()
 //int r2=0, r3=0, m=0, l3=0, l2=0; //紅外線模組的讀值(0->white,1->black)
 int _Tp = 90; //set your own value for motor power
 bool start = false, state=false; //set state to false to halt the car, set state to true to activate the car
+bool reverse = false;
 BT_CMD _cmd = NOTHING; //enum for bluetooth message, reference in bluetooth.h line 2
 /*===========================initialize variables===========================*/
 
@@ -328,13 +329,19 @@ void Search(){
   }
 
   else if(_cmd == U_TURN){
-    U_Turn();
+
     byte idSize;
     byte* id = rfid(idSize);
     while(id == 0){
       id = rfid(idSize);
+
+      MotorWriting(70, 70);
     }
+
     send_byte(id, idSize);
+    U_Turn();
+    
+    
     //at_node = true;
     
   }
@@ -347,22 +354,23 @@ void Search(){
     Right_Turn(L3_value, L2_value, M_value, R2_value, R3_value);
   }
 
+  else if(_cmd == BACK){
+    MotorWriting(-90,230);
+    delay(560);
+    Back(L3_value, L2_value, M_value, R2_value, R3_value);
+    all_black = true;
+  }
 
-  L3_value = digitalRead(L3);
-  L2_value = digitalRead(L2);
-  M_value = digitalRead(M);
-  R2_value = digitalRead(R2);
-  R3_value = digitalRead(R3);
-  tracking(L3_value,L2_value,M_value,R2_value, R3_value);
-
-  all_black = L2_value*M_value*R2_value*R3_value != 0 or L3_value*L2_value*M_value*R2_value != 0;
-//
-//  byte idSize;
-//  byte* id = rfid(idSize);
-//  if(id != 0){
-//    send_byte(id, idSize);
-//    at_node = true;
-//  }
+  if(_cmd != BACK){
+    L3_value = digitalRead(L3);
+    L2_value = digitalRead(L2);
+    M_value = digitalRead(M);
+    R2_value = digitalRead(R2);
+    R3_value = digitalRead(R3);
+    tracking(L3_value,L2_value,M_value,R2_value, R3_value);
+  
+    all_black = L2_value*M_value*R2_value*R3_value != 0 or L3_value*L2_value*M_value*R2_value != 0;
+  }
 
 
   if(!all_black){

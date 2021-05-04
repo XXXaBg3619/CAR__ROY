@@ -27,17 +27,17 @@ void Advance(int L3_value, int L2_value, int M_value, int R2_value, int R3_value
     M_value = digitalRead(A3);
     R2_value = digitalRead(A2);
     R3_value = digitalRead(A1);
-    MotorWriting(90, 90);
-    delay(25);
+    MotorWriting(160, 160);
+    delay(35);
   }
   
 }
 
 void U_Turn(){
-  MotorWriting(90, 90);
-  delay(80);
-  MotorWriting(-225, 225);
-  delay(800);
+//  MotorWriting(80, 80);
+//  delay(90);
+  MotorWriting(-200, 200);
+  delay(845);
   
 }
 
@@ -89,7 +89,7 @@ void Right_Turn(int L3_value, int L2_value, int M_value, int R2_value, int R3_va
     M_value = digitalRead(A3);
     R2_value = digitalRead(A2);
     R3_value = digitalRead(A1);
-    MotorWriting(90,90);
+    MotorWriting(80,80);
     delay(20);
 
     
@@ -98,7 +98,7 @@ void Right_Turn(int L3_value, int L2_value, int M_value, int R2_value, int R3_va
   delay(30);
 
   while(L3_value + L2_value + M_value + R2_value + R3_value != 0){
-    MotorWriting(150,-190);
+    MotorWriting(140,-203);
     delay(25);
     L3_value = digitalRead(A5);
     L2_value = digitalRead(A4);
@@ -109,7 +109,7 @@ void Right_Turn(int L3_value, int L2_value, int M_value, int R2_value, int R3_va
   }
   
   while(L3_value + L2_value + M_value + R2_value + R3_value == 0){
-    MotorWriting(150,-190);
+    MotorWriting(140,-203);
     delay(25);
     L3_value = digitalRead(A5);
     L2_value = digitalRead(A4);
@@ -120,4 +120,20 @@ void Right_Turn(int L3_value, int L2_value, int M_value, int R2_value, int R3_va
 
 }
 
-//void Back(int L3_value, int L2_value, int M_value, int R2_value, int R3_value){
+void Back(int L3_value, int L2_value, int M_value, int R2_value, int R3_value){
+  MotorWriting(-90,-135);
+  delay(1200);
+  
+  
+  while(L2_value*M_value*R2_value*R3_value == 0 or L3_value*L2_value*M_value*R2_value == 0){
+
+    L3_value = digitalRead(A5);
+    L2_value = digitalRead(A4);
+    M_value = digitalRead(A3);
+    R2_value = digitalRead(A2);
+    R3_value = digitalRead(A1);
+    MotorWriting(90,90);
+    delay(20);
+  }
+
+}
