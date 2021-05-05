@@ -47,21 +47,27 @@ def main():
             UID = str(hex(int(UID)))
             point.add_UID(UID)
             interf.end_process()
-        
-        
-
-    elif (sys.argv[1] == '1'):
+            
+   elif (sys.argv[1] == '1'):
         print("Mode 1: Self-testing mode.")
         # TODO: You can write your code to test specific function.
-        path = ["1", "6", "1"]
-        i = 0
-        while i < len(path):
+        action = ["1", "1", "1", "1", "6", "1", "3", "4", "3", "2", "1", "1"]
+        i = 3
+        while i < len(action) - 1:
             if interf.ser.SerialReadString() == "1":
-                interf.ser.SerialWrite(path[i])
-                print(path[i])
+                interf.ser.SerialWrite(action[i])
+                if i == 10:
+                    UID = interf.ser.SerialReadByte()
+                    while UID == '0' or UID == "31":
+                        UID = interf.ser.SerialReadByte()
+                    UID = str(hex(int(UID)))
+                    point.add_UID(UID)
+                print(f"arrive at Node{i + 1}", action[i])
                 i += 1
-        if interf.ser.SerialReadString() == "1":
-            interf.end_process()
+        interf.ser.SerialWrite(action[i])
+        while interf.ser.SerialReadByte() != "1":
+            continue
+        interf.end_process()
 
     elif (sys.argv[1] == '2'):
         print("test medium")
