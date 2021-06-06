@@ -7,6 +7,9 @@ enum BT_CMD {
   TURN_LEFT,
   TURN_RIGHT,
   BUZZ,
+  TEASE1,
+  TEASE2,
+  TEASE3,
   HALT
 
 };

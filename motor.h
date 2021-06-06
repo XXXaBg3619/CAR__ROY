@@ -2,8 +2,8 @@
 #include <Wire.h>
 #include <AFMotor.h>
 
-AF_DCMotor motor_L(1);
-AF_DCMotor motor_R(2);
+AF_DCMotor motor_L(3);
+AF_DCMotor motor_R(4);
 
 void MotorWriting(double vL, double vR) {
   motor_L.run(RELEASE);

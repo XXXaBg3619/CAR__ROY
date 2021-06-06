@@ -1,7 +1,7 @@
 #include<SoftwareSerial.h>
 
 
-SoftwareSerial BT(9,8);   // TX,RX on bluetooth module
+SoftwareSerial BT(9,10);   // TX,RX on bluetooth module
 
 void setup() {
   
@@ -11,16 +11,26 @@ void setup() {
 }
 
 #include"bluetooth.h"
-#include"motor.h"
 #include"buzzer.h"
+
+#include"teaser.h"
 
 BT_CMD _cmd = NOTHING;
 
 
+unsigned long timer;
+bool teaser1 = false;
+bool teaser2 = false;
+bool teaser3 = false;
+
 void loop() {
+
+  timer = millis();
   
   _cmd = ask_BT();
-  //Serial.println(_cmd);
+  if(_cmd != 0)
+    Serial.println(_cmd);
+  
   switch(_cmd){
 
     case ADVANCE:
@@ -42,5 +52,12 @@ void loop() {
       MotorWriting(0, 0);
       
   }
+
+
+  if(_cmd == TEASE1){
+    timer = millis();
+    teaser1 = true;
+  }
+  Teaser1(timer, teaser1);
 
 }
