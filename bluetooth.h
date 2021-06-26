@@ -6,10 +6,14 @@ enum BT_CMD {
   BACK,
   TURN_LEFT,
   TURN_RIGHT,
-  BUZZ,
+  BUZZ1,
+  BUZZ2,
+  BUZZ3,
   TEASE1,
   TEASE2,
   TEASE3,
+  STOP_TEASE,
+  CAMERA,
   HALT
 
 };
@@ -17,11 +21,12 @@ enum BT_CMD {
 BT_CMD ask_BT(){
   
     BT_CMD message = NOTHING;
-    char cmd;
+    byte cmd;
     if(BT.available()){
       
       cmd = BT.read();
-      message = cmd - 48;
+      message = cmd;
+      
     }
     return message;
     

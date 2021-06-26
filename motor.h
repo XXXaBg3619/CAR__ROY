@@ -2,8 +2,8 @@
 #include <Wire.h>
 #include <AFMotor.h>
 
-AF_DCMotor motor_L(3);
-AF_DCMotor motor_R(4);
+AF_DCMotor motor_L(4);
+AF_DCMotor motor_R(3);
 
 void MotorWriting(double vL, double vR) {
   motor_L.run(RELEASE);
@@ -36,21 +36,25 @@ void MotorWriting(double vL, double vR) {
 }
 
 void Advance(){
-    MotorWriting(200, 200);
-    delay(15);
+    MotorWriting(240, 255);
+    delay(100);
+    MotorWriting(0, 0);
 }
 
 void Back(){
-    MotorWriting(-200,-200);
-    delay(15);
+    MotorWriting(-240,-255);
+    delay(100);
+    MotorWriting(0, 0);
 }
 
 void Left_Turn(){
-    MotorWriting(-200,200);
-    delay(15);
+    MotorWriting(-255,255);
+    delay(100);
+    MotorWriting(0, 0);
 }
 
 void Right_Turn(){
-    MotorWriting(200,-200);
-    delay(15);
+    MotorWriting(255,-255);
+    delay(100);
+    MotorWriting(0, 0);
 }
