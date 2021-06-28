@@ -1,5 +1,4 @@
-#include<SoftwareSerial.h>
-enum BT_CMD {
+enum RPI_CMD {
   
   NOTHING,
   ADVANCE,
@@ -18,14 +17,16 @@ enum BT_CMD {
 
 };
 
-BT_CMD ask_BT(){
+RPI_CMD ask_RPI(){
   
-    BT_CMD message = NOTHING;
-    byte cmd;
-    if(BT.available()){
+    RPI_CMD message = NOTHING;
+
+    String cmd;
+    if(Serial.available()){
       
-      cmd = BT.read();
-      message = cmd;
+      cmd = Serial.readString();
+      message = cmd.toInt();
+
       
     }
     return message;

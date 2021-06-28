@@ -24,11 +24,6 @@ String readSerialPort(){
     
   }
   
-//  char end_char = '\n';
-//  msg = Serial.readStringUntil(end_char);
-//  Serial.flush();
-
-    
   
   
   

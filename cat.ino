@@ -1,20 +1,20 @@
-#include<SoftwareSerial.h>
+//#include<SoftwareSerial.h>
 
 
-SoftwareSerial BT(9,10);   // TX,RX on bluetooth module
+//SoftwareSerial BT(9,10);   // TX,RX on bluetooth module
 
 void setup() {
   
-  BT.begin(9600);
+//  BT.begin(9600);
   Serial.begin(9600);
 
 }
 
 #include"bluetooth.h"
 #include"teaser.h"
-#include"camera.h"
+//#include"camera.h"
 
-BT_CMD _cmd = NOTHING;
+RPI_CMD _cmd = NOTHING;
 
 
 unsigned long timer;
@@ -24,12 +24,14 @@ bool teaser3 = false;
 
 void loop() {
 
+
   timer = millis();
   
-  _cmd = ask_BT();
+  _cmd = ask_RPI();
   switch(_cmd){
 
     case ADVANCE:
+      
       Advance();
       break;
       
@@ -45,39 +47,39 @@ void loop() {
       Right_Turn();
       break;
       
-    case BUZZ1:
-      Serial.println("BUZZ1");
-      Serial.println("1");
-      delay(1000);
-      break;
+//    case BUZZ1:
+//      Serial.println("BUZZ1");
+//      Serial.println("1");
+//      delay(1000);
+//      break;
+//
+//    case BUZZ2:
+//      Serial.println("BUZZ2");
+//      break;
+//      
+//    case BUZZ3: 
+//      Serial.println("BUZZ3");
+//      break;
 
-    case BUZZ2:
-      Serial.println("BUZZ2");
-      break;
-      
-    case BUZZ3: 
-      Serial.println("BUZZ3");
-      break;
-
-    case CAMERA:
-      Serial.println("CAMERA");
-      Serial.println("2");
-      delay(1000);
-      String photo = readSerialPort();
-      BT.println(photo);
-      Serial.println("SENT");
-      break;
-
-    case HALT:
-      Serial.println("SHUT DOWN");
-      Serial.println("0");
-      delay(1000);
-      break;
+//    case CAMERA:
+//      Serial.println("CAMERA");
+//      Serial.println("2");
+//      delay(1000);
+//      String photo = readSerialPort();
+//      BT.println(photo);
+//      Serial.println("SENT");
+//      break;
+//
+//    case HALT:
+//      Serial.println("SHUT DOWN");
+//      Serial.println("0");
+//      delay(1000);
+//      break;
       
     default:
       MotorWriting(0, 0);
       
-}
+  }
 
 
   if(_cmd == TEASE1){
